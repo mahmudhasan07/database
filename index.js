@@ -17,8 +17,7 @@ app.get("/", async (req, res) => {
 const client = new DynamoDBClient({
     region: "us-east-1",
     credentials: {
-        accessKeyId: 'AKIAZQ3DUD2OQZLANC5O',
-        secretAccessKey: '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',
+        
     }
 });
 
@@ -80,13 +79,18 @@ const getData = async () => {
 
 app.get("/users", async (req, res) => {
     const params = {
-        TableName: "test-blog",
-        Key : {
-            nodeId : "11"
-        }
+        TableName: "blog-site"
     }
-    const data = await db.get(params).promise()
+    const data = await db.scan(params).promise()
 
+    res.send(data)
+})
+
+app.get('/user', async(req,res)=>{
+    const params = new ScanCommand({
+        TableName : "test-blog"
+    })
+    const data = await DB.send(params)
     res.send(data)
 })
 
