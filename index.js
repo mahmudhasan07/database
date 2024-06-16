@@ -2,7 +2,7 @@ const express = require("express")
 const AWS = require("aws-sdk")
 require('dotenv').config()
 // import AWS from "aws-sdk"
-const { DynamoDBClient, ListBackupsCommand, DynamoDB, ScanCommand, GetItemCommand, PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient, ListBackupsCommand, DynamoDB, ScanCommand, GetItemCommand, PutItemCommand, CreateTableCommand } = require("@aws-sdk/client-dynamodb");
 // const { DynamoDBDocumentClient, GetCommand, DynamoDBDocument, PutCommand } = require("@aws-sdk/lib-dynamodb");
 // import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 // import { DynamoDBDocumentClient, GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
@@ -82,6 +82,9 @@ const getData = async () => {
 
 // getData()
 
+
+// ! Version 2 uses
+
 app.get("/users", async (req, res) => {
     const params = {
         TableName: "blog-site"
@@ -103,6 +106,11 @@ app.post('/users', async (req, res) => {
     res.send(data)
 })
 
+
+
+
+// ! Version 3 uses 
+
 app.get('/user', async (req, res) => {
     const params = new ScanCommand({
         TableName: "test-blog"
@@ -111,13 +119,18 @@ app.get('/user', async (req, res) => {
     res.send(data)
 })
 
-app.post("/user", async(req,res)=>{
+app.post("/user", async (req, res) => {
     const body = req.body
+    // console.log(body);
     const params = new PutItemCommand({
-        TableName : "test-blog",
-        Item : body
+        TableName: "test-blog",
+        Item: body
+
     })
-    
+
+    const data = await client.send(params)
+    console.log(data);
+    res.send(data)
 })
 
 
