@@ -1,8 +1,9 @@
 const express = require("express")
 const AWS = require("aws-sdk")
+require('dotenv').config()
 // import AWS from "aws-sdk"
-const { DynamoDBClient, ListBackupsCommand, DynamoDB, ScanCommand, GetItemCommand } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, GetCommand, DynamoDBDocument } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBClient, ListBackupsCommand, DynamoDB, ScanCommand, GetItemCommand, PutItemCommand } = require("@aws-sdk/client-dynamodb");
+// const { DynamoDBDocumentClient, GetCommand, DynamoDBDocument, PutCommand } = require("@aws-sdk/lib-dynamodb");
 // import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 // import { DynamoDBDocumentClient, GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
 // const { EC2 } = require('@aws-sdk/client-ec2');
@@ -17,16 +18,18 @@ app.get("/", async (req, res) => {
 const client = new DynamoDBClient({
     region: "us-east-1",
     credentials: {
-        
+        accessKeyId: process.env.API_KEY,
+        secretAccessKey: process.env.ACCESS_KEY,
     }
 });
 
-const DB = DynamoDBDocumentClient.from(client)
+// const DB = DynamoDBClient.from(client)
+// console.log(process.env.API_KEY);
 
 // console.log(DB);
 AWS.config.update({
-    accessKeyId: 'AKIAZQ3DUD2OQZLANC5O',
-    secretAccessKey: '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',
+    accessKeyId: process.env.API_KEY,
+    secretAccessKey: process.env.ACCESS_KEY,
     region: "us-east-1",
 })
 
@@ -77,6 +80,8 @@ const getData = async () => {
     console.log(data);
 }
 
+// getData()
+
 app.get("/users", async (req, res) => {
     const params = {
         TableName: "blog-site"
@@ -86,15 +91,36 @@ app.get("/users", async (req, res) => {
     res.send(data)
 })
 
-app.get('/user', async(req,res)=>{
-    const params = new ScanCommand({
-        TableName : "test-blog"
-    })
-    const data = await DB.send(params)
+app.post('/users', async (req, res) => {
+    const body = req.body
+    // console.log(body);
+    const params = {
+        TableName: "blog-site",
+        Item: body
+    }
+    const data = await db.put(params).promise()
+    console.log(data);
     res.send(data)
 })
 
-// getData()
+app.get('/user', async (req, res) => {
+    const params = new ScanCommand({
+        TableName: "test-blog"
+    })
+    const data = await client.send(params)
+    res.send(data)
+})
+
+app.post("/user", async(req,res)=>{
+    const body = req.body
+    const params = new PutItemCommand({
+        TableName : "test-blog",
+        Item : body
+    })
+    
+})
+
+
 
 app.listen(port, () => {
     console.log(`Server is running at ${port}`);
