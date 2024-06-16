@@ -41,7 +41,7 @@ const db = new AWS.DynamoDB.DocumentClient();
 
 // app.get("/users", async (req, res) => {
 //     const params = new ScanCommand({
-//         TableName: "blog-site",
+//         TableName: "mahmud-hasan",
 //     });
 
 //     const data = await DB.send(params)
@@ -60,7 +60,7 @@ const db = new AWS.DynamoDB.DocumentClient();
 
 const getData = async () => {
     // const params = new GetCommand({
-    //     TableName: "blog-site",
+    //     TableName: "mahmud-hasan",
     //     Key: { Id: { S: "01" } }
     // });
 
@@ -87,7 +87,7 @@ const getData = async () => {
 
 app.get("/users", async (req, res) => {
     const params = {
-        TableName: "blog-site"
+        TableName: "mahmud-hasan"
     }
     const data = await db.scan(params).promise()
 
@@ -98,7 +98,7 @@ app.post('/users', async (req, res) => {
     const body = req.body
     // console.log(body);
     const params = {
-        TableName: "blog-site",
+        TableName: "mahmud-hasan",
         Item: body
     }
     const data = await db.put(params).promise()
@@ -108,13 +108,14 @@ app.post('/users', async (req, res) => {
 
 
 app.get("/users/:id", async (req, res) => {
-    // const id = req.params.id
+    const id = req.params.id
     // console.log(typeof(id));
     const params = {
-        TableName: "blog-site",
-        Key: {Id : "01"}
+        TableName: "mahmud-hasan",
+        Key: { Id: id }
     }
     const data = await db.get(params).promise()
+    // console.log(data);
     res.send(data)
 })
 
@@ -142,6 +143,20 @@ app.post("/user", async (req, res) => {
 
     const data = await client.send(params)
     console.log(data);
+    res.send(data)
+})
+
+app.get("/user/:id", async (req, res) => {
+    const id = req.params.id
+    // console.log(id);
+    const params = new GetItemCommand({
+        TableName: "test-blog",
+        Key: {
+            nodeId: { "S": id }
+        }
+    })
+    const data = await client.send(params)
+    // console.log(data);
     res.send(data)
 })
 
