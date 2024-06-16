@@ -107,6 +107,18 @@ app.post('/users', async (req, res) => {
 })
 
 
+app.get("/users/:id", async (req, res) => {
+    // const id = req.params.id
+    // console.log(typeof(id));
+    const params = {
+        TableName: "blog-site",
+        Key: {Id : "01"}
+    }
+    const data = await db.get(params).promise()
+    res.send(data)
+})
+
+
 
 
 // ! Version 3 uses 
