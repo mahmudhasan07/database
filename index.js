@@ -160,6 +160,10 @@ app.get("/user/:id", async (req, res) => {
     res.send(data)
 })
 
+app.get("/user/:name", async(req,res)=>{
+    const name = req.params.name
+})
+
 
 
 app.listen(port, () => {
