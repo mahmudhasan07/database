@@ -2,7 +2,7 @@ const express = require("express")
 const AWS = require("aws-sdk")
 require('dotenv').config()
 // import AWS from "aws-sdk"
-const { DynamoDBClient, ListBackupsCommand, DynamoDB, ScanCommand, GetItemCommand, PutItemCommand, CreateTableCommand } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient, ListBackupsCommand, DynamoDB, ScanCommand, GetItemCommand, PutItemCommand, CreateTableCommand, QueryCommand } = require("@aws-sdk/client-dynamodb");
 // const { DynamoDBDocumentClient, GetCommand, DynamoDBDocument, PutCommand } = require("@aws-sdk/lib-dynamodb");
 // import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 // import { DynamoDBDocumentClient, GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
@@ -160,8 +160,16 @@ app.get("/user/:id", async (req, res) => {
     res.send(data)
 })
 
-app.get("/user/:name", async(req,res)=>{
+app.get("/user/:name", async (req, res) => {
     const name = req.params.name
+    const params = new QueryCommand({
+        TableName: "test-blog",
+        KeyConditions: {
+            name: { "S": name }
+        }
+    })
+
+    const res = await client.send(params)
 })
 
 
