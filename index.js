@@ -119,6 +119,17 @@ app.get("/users/:id", async (req, res) => {
     res.send(data)
 })
 
+// app.get("/search/:name", async(req,res)=>{
+//     const name = req.params.name
+//     console.log(name);
+//     const params = {
+//         TableName: "mahmmud-hasan",
+//         KeyConditionExpression : {name : name}
+//     }
+//     const data = await db.query(params).promise()
+//     // console.log(data);
+// })
+
 
 
 
@@ -160,16 +171,16 @@ app.get("/user/:id", async (req, res) => {
     res.send(data)
 })
 
-app.get("/user/:name", async (req, res) => {
+app.get("/search/:name", async (req, res) => {
     const name = req.params.name
+    console.log(name);
     const params = new QueryCommand({
         TableName: "test-blog",
-        KeyConditions: {
-            name: { "S": name }
-        }
+        KeyConditionExpression: name = { "S": name }
     })
 
-    const res = await client.send(params)
+    const data = await client.send(params)
+    res.send(data)
 })
 
 
