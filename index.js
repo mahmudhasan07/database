@@ -176,11 +176,16 @@ app.get("/search/:name", async (req, res) => {
     console.log(name);
     const params = new QueryCommand({
         TableName: "test-blog",
-        KeyConditionExpression: name = { "S": name }
+        KeyConditionExpression: 'name = :v1',
+        ExpressionAttributeValues : {
+            ':v1': { "S" : 'Male' }
+        },
+        ProjectionExpression : "gender"
     })
 
     const data = await client.send(params)
-    res.send(data)
+    console.log(data);
+    // res.send(data)
 })
 
 
