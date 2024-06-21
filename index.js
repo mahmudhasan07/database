@@ -119,16 +119,24 @@ app.get("/users/:id", async (req, res) => {
     res.send(data)
 })
 
-// app.get("/search/:name", async(req,res)=>{
-//     const name = req.params.name
-//     console.log(name);
-//     const params = {
-//         TableName: "mahmmud-hasan",
-//         KeyConditionExpression : {name : name}
-//     }
-//     const data = await db.query(params).promise()
-//     // console.log(data);
-// })
+app.get("/search/:name", async(req,res)=>{
+    const name = req.params.name
+    console.log(name);
+    const params = {
+        TableName: "mahmmud-hasan",
+        KeyConditionExpression : 'Id = :v1',
+        // ExpressionAttributeNames: {
+        //     'Id': 'Primary Key',
+        // },
+        ExpressionAttributeValues: {
+            ':v1' : "01"
+        }
+
+    }
+    const data = await db.query(params).promise()
+
+    console.log(data);
+})
 
 
 
@@ -171,22 +179,22 @@ app.get("/user/:id", async (req, res) => {
     res.send(data)
 })
 
-app.get("/search/:name", async (req, res) => {
-    const name = req.params.name
-    console.log(name);
-    const params = new QueryCommand({
-        TableName: "test-blog",
-        KeyConditionExpression: 'name = :v1',
-        ExpressionAttributeValues : {
-            ':v1': { "S" : 'Male' }
-        },
-        ProjectionExpression : "gender"
-    })
+// app.get("/search/:name", async (req, res) => {
+//     const name = req.params.name
+//     console.log(name);
+//     const params = new QueryCommand({
+//         TableName: "test-blog",
+//         KeyConditionExpression: 'gender = :v1',
+//         ExpressionAttributeValues : {
+//             ':v1': { "S" : 'Male' }
+//         }
+//         // ProjectionExpression : 'nodeId'
+//     })
 
-    const data = await client.send(params)
-    console.log(data);
-    // res.send(data)
-})
+//     const data = await client.send(params)
+//     console.log(data);
+//     res.send(data)
+// })
 
 
 
